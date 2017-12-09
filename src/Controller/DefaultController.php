@@ -17,6 +17,7 @@ class DefaultController extends Controller
 
     public function connectAction(Request $request, $app_id, $app_secret, $my_url ){
 
+        print_r($app_id);
         $session = new Session();
 
         //get get variables

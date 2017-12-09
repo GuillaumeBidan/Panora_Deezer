@@ -1,9 +1,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app_id: '%env%'
-    app_secret: '%env(app.secret)%'
-    my_url: '%env(SYMFONY__ENV__URL)%'
+    app_id: '%env(deezer_id)%'
+    app_secret: '%env(deezer_secret)%'
+    my_url: '%env(deezer_url)%'
 
 services:
     # default configuration for services in *this* file

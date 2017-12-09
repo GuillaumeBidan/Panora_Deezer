@@ -99,7 +99,6 @@ class DefaultController extends Controller
         curl_close($ch);
 
         //get boolean return
-        $resArr = array();
         $resArr = json_decode($answer);
 
         return $resArr;
@@ -132,11 +131,13 @@ class DefaultController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $returnValue=self::addSong($token,$form);
-            
-            //notice message
-            $modificationText="adding a new favorite song";
-                         
-            
+
+            if($returnValue === true){
+                $modificationText="adding a new favorite song";
+            }else{
+                $returnValue = false;
+                $modificationText="track id does not exist";
+            }
         }
 
 
@@ -171,11 +172,14 @@ class DefaultController extends Controller
         
      
         $answer = curl_exec($ch);
-        $resArr = array();
         $resArr = json_decode($answer);
 
         //close curl
         curl_close($ch);
+
+        if($resArr !== true){
+            $resArr = false;
+        }
 
         //notice message
         $modificationText="deleting a favorite song";

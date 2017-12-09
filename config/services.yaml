@@ -3,7 +3,7 @@
 parameters:
     app_id: '%env(deezer_id)%'
     app_secret: '%env(deezer_secret)%'
-    my_url: '%env(deezer_url)%'
+    my_url: '%env(url)%'
 
 services:
     # default configuration for services in *this* file

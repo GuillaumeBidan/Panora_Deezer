@@ -1,5 +1,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    app_id: "170831"
+    app_secret: "528e3b09b84ec174cf405af60cbf01a3"
+    my_url: "http://localhost/panorabanquedeezer/public/index.php/connect"
+
 services:
     # default configuration for services in *this* file
     _defaults:

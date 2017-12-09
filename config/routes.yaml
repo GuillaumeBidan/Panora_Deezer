@@ -1,0 +1,11 @@
+connect:
+    path: /
+    defaults: { _controller: 'App\Controller\DefaultController::connectAction', app_id: "%app_id%", app_secret: "%app_secret%", my_url: "%my_url%" }
+
+favoriteTracks:
+    path: /favoriteTracks
+    defaults: { _controller: 'App\Controller\DefaultController::favoriteTracksAction',  }
+
+delete_song:
+    path: /deleteSong
+    defaults: { _controller: 'App\Controller\DefaultController::DeleteTracksAction' }

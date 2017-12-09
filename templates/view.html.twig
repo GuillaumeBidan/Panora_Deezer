@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+{% endblock %}
+
+{% block body %}
+
+<div id="formDiv">
+
+    {{  form_start(form) }}
+    {{ form_widget(form) }}
+
+    <input id="submit" class="btn btn-default" type="submit" />
+    {{ form_end(form) }}
+
+    {# notification message#}
+    {% if modificationText!="" %}
+        {% if Modification==true %}
+            <span class="green"> {{modificationText|capitalize}} successfully done </span>
+        {% elseif Modification==false %}
+            <span class="red"> Error: {{modificationText}} </span>
+        {% endif %}
+    {% endif %}
+
+   
+</div>
+
+
+<div id="table">
+
+    {% if favoriteTracks.error is defined %}
+
+        <span class="red">Error: {{ favoriteTracks.error.message }}</span>
+
+    {% else %}
+        {# display grid #}
+        <table id="trackTable" class="table table-striped tablesorter">
+            <thead>
+              <tr>
+                <th>Id <i class="fa fa-fw fa-sort"/></th>
+                <th>Title <i class="fa fa-fw fa-sort"/></th>
+                <th>Duration <i class="fa fa-fw fa-sort"/></th>
+                <th>Delete?</th>
+              </tr>
+            </thead>
+            <tbody>
+
+                {% for track in favoriteTracks.data|sort %}
+
+                    {# dump(track) #}
+
+                      <tr class="left">
+                        <td>{{ track.id }}</td>
+                        <td>{{ track.title }}</td>
+                        <td>
+                            {% if(track.duration<3600) %}
+                                {{ track.duration|date('i:s')  }}
+                            {% else %}
+                                {{ track.duration|date('H:i:s')  }}
+                            {% endif %}
+                        </td>
+                        <td> <a href="{{ path('delete_song', {'track_id':track.id}) }}"><i class="glyphicon glyphicon-remove"/></a></td>
+                      </tr>
+        
+                {%  endfor %}
+
+            </tbody>
+          </table>
+    {% endif %}
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+            {# libraries to sort table #}
+            <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/tablesorter/2.17.4/js/jquery.tablesorter.js"></script>
+
+            <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}

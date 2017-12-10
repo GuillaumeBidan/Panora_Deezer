@@ -185,6 +185,6 @@ class DefaultController extends Controller
         $modificationText="deleting a favorite song";
 
         //forward to favorite tracks page
-        return $this->forward('AppBundle:Default:favoriteTracks',array('returnValue' => $resArr,'modificationText' => $modificationText));
+        return $this->forward('App\Controller\DefaultController::favoriteTracksAction',array('returnValue' => $resArr,'modificationText' => $modificationText));
     }
 }

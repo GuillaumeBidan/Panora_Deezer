@@ -91,7 +91,7 @@ render() {
 };
 
 ReactDOM.render(
-<App url={'http://localhost/panorabanquedeezer/public/index.php/tracksJson'}
+<App url={'tracksJson'}
         perPage={10} />,
         document.getElementById('react-paginate')
 );

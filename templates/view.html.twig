@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('build/main.css') }}" />
 {% endblock %}
 
 {% block body %}
@@ -36,42 +36,22 @@
 
     {% else %}
         {# display grid #}
-        <table id="trackTable" class="table table-striped tablesorter">
-            <thead>
-              <tr>
-                <th>Id <i class="fa fa-fw fa-sort"/></th>
-                <th>Title <i class="fa fa-fw fa-sort"/></th>
-                <th>Duration <i class="fa fa-fw fa-sort"/></th>
-                <th>Delete?</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div id="trackTable" class="table table-striped tablesorter">
+                  <div class="row">
+                    <div class="col-md-3">Id  </div>
+                    <div class="col-md-3">Title </div>
+                    <div class="col-md-3">Duration </div>
+                    <div class="col-md-3">Delete?</div>
+                  </div>
+                <div id="react-paginate" class="text-center">
+                </div>
 
-                {% for track in favoriteTracks.data|sort %}
+      </div>
 
-                    {# dump(track) #}
 
-                      <tr class="left">
-                        <td>{{ track.id }}</td>
-                        <td>{{ track.title }}</td>
-                        <td>
-                            {% if(track.duration<3600) %}
-                                {{ track.duration|date('i:s')  }}
-                            {% else %}
-                                {{ track.duration|date('H:i:s')  }}
-                            {% endif %}
-                        </td>
-                        <td> <a href="{{ path('delete_song', {'track_id':track.id}) }}"><i class="glyphicon glyphicon-remove"/></a></td>
-                      </tr>
-        
-                {%  endfor %}
 
-            </tbody>
-          </table>
     {% endif %}
 </div>
-
-
 
 
 
@@ -82,5 +62,6 @@
             <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/tablesorter/2.17.4/js/jquery.tablesorter.js"></script>
 
+            <script src="{{ asset('build/app.js') }}"></script>
             <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}

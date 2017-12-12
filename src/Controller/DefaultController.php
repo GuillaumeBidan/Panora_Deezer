@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -75,9 +77,11 @@ class DefaultController extends Controller
         //close curl
         curl_close($ch);
 
+
+
         //get json data
         $resArr = array();
-        $resArr = json_decode($answer);
+        $resArr = json_decode($answer,true);
 
         return $resArr;
     }
@@ -110,6 +114,10 @@ class DefaultController extends Controller
      */
     public function favoriteTracksAction(Request $request,$returnValue="",$modificationText="")
     {
+
+        // SESSION A FAIRE pour message flash??
+
+
 
         //get token
         $token=$request->cookies->get("token");
@@ -154,6 +162,63 @@ class DefaultController extends Controller
                     )
                 );
     }
+
+    public function trackJsonAction(Request $request){//$page, $numberPerPage){
+
+        $offset = $request->query->get('offset');
+        $numberPerPage = $request->query->get('numberPerPage');
+
+        //get token
+        $token=$request->cookies->get("token");
+
+        //redirect to connect if no token found
+        if($token==""){
+           throw new AccessDeniedException();
+        }
+
+        $favoriteTracks=self::getApiData($token);
+
+        $jsonArray = array();
+        $i = -1;
+
+        $nextOffset = $offset + $numberPerPage;
+
+        if($offset - $numberPerPage < 1){
+            $previousOffset = 0;
+        }else{
+            $previousOffset = $offset - $numberPerPage;
+        }
+
+        foreach($favoriteTracks['data'] as $track){
+            $i++;
+            if($i >= $offset && $i < $nextOffset){
+                //simplify array
+                $trackArray["id"]=$track["id"];
+                $trackArray["title"]=$track["title"];
+                $trackArray["duration"]=round($track["duration"]/60)."min ".($track["duration"]%60)."sec";
+                $trackArray["deleteUrl"]=$this->generateUrl("delete_song", array('track_id' => $trackArray["id"]));
+
+                array_push($jsonArray,$trackArray);
+
+            }
+        }
+
+
+
+        $dataMeta=array(
+            "numberPerPage" => $numberPerPage,
+            "next" => "?numberPerPage=".$numberPerPage."&offset=".$nextOffset,
+            "offset" => $numberPerPage + $offset,
+            "previous" =>"?numberPerPage=".$numberPerPage."&offset=".$previousOffset,
+            "total_count" => count($favoriteTracks['data']),
+        );
+
+        $json = array("meta" => $dataMeta, "tracks" =>$jsonArray );
+
+
+        return new JsonResponse($json);
+
+    }
     
     
     public function DeleteTracksAction(Request $request)
@@ -185,6 +250,6 @@ class DefaultController extends Controller
         $modificationText="deleting a favorite song";
 
         //forward to favorite tracks page
-        return $this->forward('App\Controller\DefaultController::favoriteTracksAction',array('returnValue' => $resArr,'modificationText' => $modificationText));
+        return $this->redirectToRoute('favoriteTracks',array('returnValue' => $resArr,'modificationText' => $modificationText));
     }
 }

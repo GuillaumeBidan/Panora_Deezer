@@ -4,7 +4,11 @@ connect:
 
 favoriteTracks:
     path: /favoriteTracks
-    defaults: { _controller: 'App\Controller\DefaultController::favoriteTracksAction',  }
+    defaults: { _controller: 'App\Controller\DefaultController::favoriteTracksAction' }
+
+trackJsonAction:
+    path: /tracksJson
+    defaults: { _controller: 'App\Controller\DefaultController::trackJsonAction'}
 
 delete_song:
     path: /deleteSong

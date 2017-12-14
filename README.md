@@ -1,6 +1,8 @@
 Deezer Favorit Track List
 ========================
 
+Cette application liste les musiques favorites à partir de l'Api Deezer. Elle permet d'ajouter et de supprimer des musiques.
+Il faut avoir un compte deezer pour tester l'application.
 
 Structure:
 --------------

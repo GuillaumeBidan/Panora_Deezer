@@ -6,6 +6,11 @@ import $ from 'jquery';
 window.React = React;
 
 
+$(".close").click(function(){
+    $(this).parent().hide();
+});
+
+
 export class TrackList extends Component {
     render() {
         let trackNodes = this.props.data.map(function(track, index) {

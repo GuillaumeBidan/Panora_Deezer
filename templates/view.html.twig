@@ -15,42 +15,37 @@
     <input id="submit" class="btn btn-default" type="submit" />
     {{ form_end(form) }}
 
-    {# notification message#}
-    {% if modificationText!="" %}
-        {% if Modification==true %}
-            <span class="green"> {{modificationText|capitalize}} successfully done </span>
-        {% elseif Modification==false %}
-            <span class="red"> Error: {{modificationText}} </span>
-        {% endif %}
+    {% if flashes is not null %}
+        {% for flashMessage in flashes.get('success') %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fa fa-check"></i> {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        {% for flashMessage in flashes.get('error') %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fa fa-cross"></i> {{ flashMessage }}
+            </div>
+        {% endfor %}
     {% endif %}
 
-   
 </div>
 
 
 <div id="table">
-
-    {% if favoriteTracks.error is defined %}
-
-        <span class="red">Error: {{ favoriteTracks.error.message }}</span>
-
-    {% else %}
         {# display grid #}
         <div id="trackTable" class="table table-striped tablesorter">
-                  <div class="row">
+              <div id="tableHeader" class="row">
                     <div class="col-md-3">Id  </div>
                     <div class="col-md-3">Title </div>
                     <div class="col-md-3">Duration </div>
                     <div class="col-md-3">Delete?</div>
-                  </div>
-                <div id="react-paginate" class="text-center">
-                </div>
-
-      </div>
-
-
-
-    {% endif %}
+              </div>
+            <div id="react-paginate" class="text-center">
+            </div>
+        </div>
 </div>
 
 
@@ -58,10 +53,5 @@
 {% endblock %}
 
 {% block javascripts %}
-            {# libraries to sort table #}
-            <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/tablesorter/2.17.4/js/jquery.tablesorter.js"></script>
-
             <script src="{{ asset('build/app.js') }}"></script>
-            <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}

@@ -112,12 +112,10 @@ class DefaultController extends Controller
      * Main Page which list favoriteTracks
      *
      */
-    public function favoriteTracksAction(Request $request,$returnValue="",$modificationText="")
+    public function favoriteTracksAction(Request $request)
     {
-
-        // SESSION A FAIRE pour message flash??
-
-
+        $session = new Session();
+        $session->start();
 
         //get token
         $token=$request->cookies->get("token");
@@ -141,29 +139,27 @@ class DefaultController extends Controller
             $returnValue=self::addSong($token,$form);
 
             if($returnValue === true){
-                $modificationText="adding a new favorite song";
+                $session->getFlashBag()->add('success', "adding a new favorite song");
             }else{
-                $returnValue = false;
-                $modificationText="track id does not exist";
+                $session->getFlashBag()->add('error', "track id does not exist");
             }
         }
 
 
-
+        /* use react to get data
         //to get data from the API
         $favoriteTracks=self::getApiData($token);
-
+        */
         return $this->render('view.html.twig',
                 array(
                     'form' => $form->createView(),
-                    'favoriteTracks' => $favoriteTracks,
-                    'Modification' => $returnValue,
-                    'modificationText' => $modificationText
+                    'flashes' => $session->getFlashBag()
+                    //'favoriteTracks' => $favoriteTracks
                     )
                 );
     }
 
-    public function trackJsonAction(Request $request){//$page, $numberPerPage){
+    public function trackJsonAction(Request $request){
 
         $offset = $request->query->get('offset');
         $numberPerPage = $request->query->get('numberPerPage');
@@ -223,6 +219,9 @@ class DefaultController extends Controller
     
     public function DeleteTracksAction(Request $request)
     {
+        $session = new Session();
+        $session->start();
+
         //get trackid
         $trackid=(int)$request->query->get('track_id');
 
@@ -243,13 +242,12 @@ class DefaultController extends Controller
         curl_close($ch);
 
         if($resArr !== true){
-            $resArr = false;
+            $session->getFlashBag()->add('error', "error with deleting a favorite song");
+        }else{
+            $session->getFlashBag()->add('success', "deleting a favorite song");
         }
 
-        //notice message
-        $modificationText="deleting a favorite song";
-
         //forward to favorite tracks page
-        return $this->redirectToRoute('favoriteTracks',array('returnValue' => $resArr,'modificationText' => $modificationText));
+        return $this->redirectToRoute('favoriteTracks');
     }
 }

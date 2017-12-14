@@ -9,6 +9,12 @@
     text-align:left;
 }
 
+#tableHeader{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
 #formDiv{
     margin:20px auto;
     max-width:180px;
@@ -21,6 +27,6 @@
 
 #table{
     width:80%;
-    margin:auto;
+    margin:50px auto;
     text-align:center;
 }

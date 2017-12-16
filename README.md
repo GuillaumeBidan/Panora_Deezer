@@ -28,7 +28,7 @@ Deezer API:
   * my_url
 
 
-Technologies utilisés:
+Technologies utilisées:
 --------------
   * Symfony 4 (>PHP 7.1.3)
   * ReactJs

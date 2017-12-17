@@ -13,7 +13,7 @@ Structure:
   * src: code source
   * templates: vues
   * var: cache/log
-  * vendor: librairie externe
+  * vendor: librairies externes
 
 
 Paramètres d'envionnement
@@ -25,7 +25,6 @@ Symfony:
 Deezer API:
   * app_id
   * app_secret
-  * my_url
 
 
 Technologies utilisées:

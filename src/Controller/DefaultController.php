@@ -13,11 +13,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DefaultController extends Controller
 {
 
-    public function connectAction(Request $request, $app_id, $app_secret, $my_url ){
+    public function connectAction(Request $request, $app_id, $app_secret ){
 
         $session = new Session();
 
@@ -28,6 +29,8 @@ class DefaultController extends Controller
         //use deezer oauth api
         if(empty($code)){
             $session->set('state',  md5(uniqid(rand(), TRUE)));//CSRF protection
+            $my_url = $this->generateUrl("connect",array(),UrlGeneratorInterface::ABSOLUTE_URL);
+
             $dialog_url = "https://connect.deezer.com/oauth/auth.php?app_id=".$app_id
                 ."&redirect_uri=".urlencode($my_url)."&perms=manage_library,delete_library"
                 ."&state=". $session->get('state');

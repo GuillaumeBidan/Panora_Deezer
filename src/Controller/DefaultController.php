@@ -28,7 +28,7 @@ class DefaultController extends Controller
 
         //use deezer oauth api
         if(empty($code)){
-            $session->set('state',  md5(uniqid(rand(), TRUE)));//CSRF protection
+            $session->set('state',  hash("sha256",(uniqid(rand(), TRUE))));//CSRF protection
             $my_url = $this->generateUrl("connect",array(),UrlGeneratorInterface::ABSOLUTE_URL);
 
             $dialog_url = "https://connect.deezer.com/oauth/auth.php?app_id=".$app_id
